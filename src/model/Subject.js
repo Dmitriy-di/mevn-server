@@ -28,14 +28,18 @@ const schema = new Schema(
       default: '',
       required: true,
     },
-    module: {
-      type: ObjectId,
-      ref: 'Modulee',
-    },
-    task: {
-      type: ObjectId,
-      ref: 'Task',
-    },
+    modules: [
+      {
+        type: ObjectId,
+        ref: 'Modulee',
+      },
+    ],
+    tasks: [
+      {
+        type: ObjectId,
+        ref: 'Task',
+      },
+    ],
     group: {
       type: ObjectId,
       ref: 'Group',

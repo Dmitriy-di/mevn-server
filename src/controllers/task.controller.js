@@ -1,5 +1,5 @@
 const genericCrud = require('./generic.controller');
-const { Task, Module } = require('../model');
+const { Task, Module, Subject } = require('../model');
 const boom = require('boom');
 
 const relations = {
@@ -37,7 +37,13 @@ module.exports = {
       module.tasks.push(newItem);
       await module.save();
 
-      console.log(1111111111111111, body.modulee);
+      const subject = await Subject.findById(body.executor);
+      subject.tasks.push(newItem);
+      await subject.save();
+
+      console.log(11111111111, body.executor);
+      console.log(2222222222222, subject);
+
       return res.status(200).send(newItem);
     } catch (err) {
       return res.status(400).send(boom.boomify(err));
