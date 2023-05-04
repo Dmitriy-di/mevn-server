@@ -8,11 +8,14 @@ const { routes } = require('./src/routes');
 const { join } = require('path');
 
 // настроим подключение к бд
-const mongoHost = process.env.MONGO_HOST;
-const mongoPort = process.env.MONGO_PORT;
-const mongoDbname = process.env.DB_NAME;
+// const mongoHost = process.env.MONGO_HOST;
+// const mongoPort = process.env.MONGO_PORT;
+// const mongoDbname = process.env.DB_NAME;
+const mongoHost = '127.0.0.1';
+const mongoPort = '27017';
+const mongoDbname = 'some-mongo';
 
-mongoose.connect(`mongodb://${mongoHost}:${mongoPort}/${mongoDbname}`, {
+mongoose.connect(`mongodb://${mongoHost}:${mongoPort}`, {
   useCreateIndex: true,
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -33,7 +36,9 @@ routes.forEach((item) => {
 });
 
 // объявим наши  роуты
-const PORT = process.env.PORT;
+// const PORT = process.env.PORT;
+const PORT = 3000;
+
 http.createServer({}, app).listen(PORT);
 
 console.log(`Server running at ${PORT}`);
