@@ -21,7 +21,17 @@ module.exports = {
 
   async getAll(_, res) {
     try {
-      const items = await Module.find().populate(['tasks', 'responsible']);
+      const items = await Module.find().populate([
+        'tasks',
+        'responsible',
+        {
+          path: 'tasks',
+          populate: {
+            path: 'executor',
+            model: 'Subject',
+          },
+        },
+      ]);
       return res.status(200).send(items);
     } catch (err) {
       return res.status(400).send(boom.boomify(err));

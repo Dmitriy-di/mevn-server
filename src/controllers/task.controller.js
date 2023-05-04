@@ -41,9 +41,6 @@ module.exports = {
       subject.tasks.push(newItem);
       await subject.save();
 
-      console.log(11111111111, body.executor);
-      console.log(2222222222222, subject);
-
       return res.status(200).send(newItem);
     } catch (err) {
       return res.status(400).send(boom.boomify(err));
