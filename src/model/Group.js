@@ -21,7 +21,6 @@ const schema = new Schema(
     icon: {
       type: String,
       default: '',
-      required: true,
     },
     subjects: [
       {

@@ -43,6 +43,7 @@ const schema = new Schema(
     group: {
       type: ObjectId,
       ref: 'Group',
+      required: true,
     },
   },
   { timestamps: true },

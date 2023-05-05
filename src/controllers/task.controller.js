@@ -3,30 +3,12 @@ const { Task, Module, Subject } = require('../model');
 const boom = require('boom');
 
 const relations = {
-  getAll: 'modulee',
-  get: 'modulee',
+  getAll: ['modulee', 'executor'],
+  get: ['modulee', 'executor'],
 };
 
 module.exports = {
-  ...genericCrud(Task),
-
-  async get({ params: { id } }, res) {
-    try {
-      const item = await Task.findById(id).populate(['modulee', 'executor']);
-      return res.status(200).send(item);
-    } catch (err) {
-      return res.status(400).send(boom.boomify(err));
-    }
-  },
-
-  async getAll(_, res) {
-    try {
-      const items = await Task.find().populate(['modulee', 'executor']);
-      return res.status(200).send(items);
-    } catch (err) {
-      return res.status(400).send(boom.boomify(err));
-    }
-  },
+  ...genericCrud(Task, relations),
 
   async create({ body }, res) {
     try {
