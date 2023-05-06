@@ -1,5 +1,5 @@
 const genericCrud = require('./generic.controller');
-const { Module, Subject } = require('../model');
+const { Module, Subject, Task } = require('../model');
 const boom = require('boom');
 
 const relations = {
@@ -40,6 +40,22 @@ module.exports = {
       await subject.save();
 
       return res.status(200).send(newItem);
+    } catch (err) {
+      return res.status(400).send(boom.boomify(err));
+    }
+  },
+
+  async delete({ params: { id } }, res) {
+    try {
+      let mod = await Module.findById(id);
+
+      for (let task of mod.tasks) {
+        await Task.findByIdAndDelete(task._id);
+      }
+
+      await Module.findByIdAndDelete(id);
+
+      return res.status(200).send({ status: 'OK', message: 'Удалено' });
     } catch (err) {
       return res.status(400).send(boom.boomify(err));
     }

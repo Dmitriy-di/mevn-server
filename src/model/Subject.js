@@ -43,7 +43,7 @@ const schema = new Schema(
     group: {
       type: ObjectId,
       ref: 'Group',
-      required: true,
+      // Если добавить поле required: true, то при создании модуля и указании ответственного будет получаться ошибка
     },
   },
   { timestamps: true },
