@@ -35,8 +35,26 @@ routes.forEach((item) => {
   app.use(`/api/v1/${item}`, require(`./src/routes/${item}`));
 });
 
-// объявим наши  роуты
-// const PORT = process.env.PORT;
+//=========file
+// Роут для загрузки файла
+const uploadRoute = require('./src/routes/files');
+app.use('/api/v1/files', uploadRoute);
+
+// app.post('/api/v1/upload', upload.single('file'), (req, res) => {
+//  res.redirect('/');
+// });
+
+// app.get('/api/v1/file', (req, res) => {
+//   console.log();
+//   gfs.files.find().toArray((err, files) => {
+//     if (err) {
+//       return res.status(500).json({ error: 'Failed to get files' });
+//     }
+//     return res.json(files);
+//   });
+// });
+//=========file/
+
 const PORT = 3000;
 
 http.createServer({}, app).listen(PORT);
