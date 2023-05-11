@@ -4,33 +4,33 @@ const {
   Schema: {
     Types: { ObjectId },
   },
-} = require("mongoose");
+} = require('mongoose');
 
 const schema = new Schema({
   title: {
     type: String,
-    default: "",
+    default: '',
   },
   description: {
     type: String,
-    default: "",
+    default: '',
   },
   price: {
     type: Number,
-    default: "",
+    default: '',
   },
   amount: {
     type: Number,
-    default: "",
+    default: '',
   },
   imageUrl: {
     type: String,
-    default: "",
+    default: '',
   },
   category: {
     type: ObjectId,
-    ref: "Category",
+    ref: 'Category',
   },
 });
 
-module.exports = model("Product", schema);
+module.exports = model('Product', schema);
