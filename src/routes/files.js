@@ -17,13 +17,11 @@ const storage = new GridFsStorage({
   options: { useNewUrlParser: true, useUnifiedTopology: true },
 
   file: (req, file) => {
+    console.log(211123, file);
     return new Promise((resolve, reject) => {
       const fileInfo = {
         filename: file.originalname,
         bucketName: 'uploads',
-        metadata: {
-          category: ObjectId(req.body.category), // Пример: передаем категорию файла
-        },
       };
 
       resolve(fileInfo);
@@ -51,7 +49,6 @@ connection.once('open', () => {
     const fileId = new ObjectId(req.params.id);
 
     gfs.find({ _id: fileId }).toArray((err, files) => {
-      console.log(5555555, files);
       if (err) {
         return res.status(500).send(err);
       }
@@ -82,7 +79,6 @@ connection.once('open', () => {
           console.log(err);
           res.status(500).send('Internal server error');
         });
-        console.log(111, readStream);
         const chunks = [];
         readStream.on('data', (chunk) => {
           chunks.push(chunk);

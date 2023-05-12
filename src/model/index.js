@@ -7,6 +7,7 @@ const Module = require('./Modulee');
 const Task = require('./Task');
 const Subject = require('./Subject');
 const Group = require('./Group');
+const File = require('./File');
 
 module.exports = {
   Product,
@@ -18,4 +19,5 @@ module.exports = {
   Task,
   Subject,
   Group,
+  File,
 };
