@@ -19,7 +19,17 @@ mongoose.connect(`mongodb://${mongoHost}:${mongoPort}`, {
 });
 
 ////
+const connection = mongoose.createConnection(
+  `mongodb://${mongoHost}:${mongoPort}`,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+);
 
+module.exports = {
+  connection,
+};
 ////
 
 // инициализируем приложение
