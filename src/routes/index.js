@@ -9,5 +9,6 @@ module.exports = {
     'tasks',
     'subjects',
     'groups',
+    'filesObj',
   ],
 };

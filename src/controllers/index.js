@@ -8,4 +8,5 @@ module.exports = {
   task: require('./task.controller'),
   subject: require('./subject.controller'),
   group: require('./group.controller'),
+  file: require('./file.controller'),
 };

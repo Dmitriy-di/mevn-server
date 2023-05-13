@@ -7,7 +7,7 @@ const {
 } = require('mongoose');
 
 const schema = new Schema({
-  filename: {
+  name: {
     type: String,
     default: '',
     required: true,
@@ -17,9 +17,40 @@ const schema = new Schema({
     default: '',
     required: true,
   },
-  mimeType: {
+  uploadDate: {
+    type: Date,
+    default: '',
+    required: true,
+  },
+  md5: {
     type: String,
     default: '',
+    required: true,
+  },
+  contentType: {
+    type: String,
+    default: '',
+    required: true,
+  },
+  size: {
+    type: Number,
+    default: '',
+    required: true,
+  },
+  encoding: {
+    type: String,
+    default: '',
+    required: true,
+  },
+  bucketName: {
+    type: String,
+    default: '',
+    required: true,
+  },
+  subject: {
+    type: ObjectId,
+    ref: 'Subject',
+    required: true,
   },
 });
 

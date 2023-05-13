@@ -9,6 +9,7 @@ const { ObjectId } = mongoose.Types;
 const mongoHost = '127.0.0.1';
 const mongoPort = '27017';
 const urlDB = `mongodb://${mongoHost}:${mongoPort}`;
+const { File } = require('../model');
 
 // Создаем хранилище GridFS
 const storage = new GridFsStorage({
@@ -95,13 +96,38 @@ connection.once('open', () => {
       }
     });
   });
+
+  router.delete('/:id', (req, res) => {
+    const fileId = new ObjectId(req.params.id);
+
+    gfs.delete(fileId, (err) => {
+      if (err) {
+        return res.status(500).send(err);
+      }
+
+      return res.status(200).send('File deleted successfully!');
+    });
+  });
 });
 
 const upload = multer({ storage });
 
 // Обработчик маршрута загрузки файла
-router.post('/', upload.single('file'), (req, res) => {
+router.post('/', upload.single('file'), async (req, res) => {
+  const item = new File({
+    name: req.file.filename,
+    mimeType: req.file.mimetype,
+    idFile: req.file.id,
+    uploadDate: req.file.uploadDate,
+    md5: req.file.md5,
+    size: req.file.size,
+    encoding: req.file.encoding,
+    bucketName: req.file.bucketName,
+    contentType: req.file.contentType,
+  });
+  const newItem = await item.save();
   console.log(1111, req.file); // Информация о загруженном файле
+  console.log(2222, newItem);
   res.status(200).send('File uploaded successfully!');
 });
 
