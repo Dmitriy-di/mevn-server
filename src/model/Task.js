@@ -33,6 +33,12 @@ const schema = new Schema(
       ref: 'Subject',
       required: true,
     },
+    files: [
+      {
+        type: ObjectId,
+        ref: 'File',
+      },
+    ],
   },
   { timestamps: true },
 );

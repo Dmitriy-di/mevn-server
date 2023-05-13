@@ -32,11 +32,6 @@ const schema = new Schema({
     default: '',
     required: true,
   },
-  size: {
-    type: Number,
-    default: '',
-    required: true,
-  },
   encoding: {
     type: String,
     default: '',
@@ -47,9 +42,19 @@ const schema = new Schema({
     default: '',
     required: true,
   },
-  subject: {
+  idFile: {
+    type: String,
+    default: '',
+    required: true,
+  },
+  // subject: {
+  //   type: ObjectId,
+  //   ref: 'Subject',
+  //   required: true,
+  // },
+  task: {
     type: ObjectId,
-    ref: 'Subject',
+    ref: 'Task',
     required: true,
   },
 });

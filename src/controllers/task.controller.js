@@ -3,8 +3,8 @@ const { Task, Module, Subject } = require('../model');
 const boom = require('boom');
 
 const relations = {
-  getAll: ['modulee', 'executor'],
-  get: ['modulee', 'executor'],
+  getAll: ['modulee', 'executor', 'files'],
+  get: ['modulee', 'executor', 'files'],
 };
 
 module.exports = {

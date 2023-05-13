@@ -40,12 +40,12 @@ const schema = new Schema(
         ref: 'Task',
       },
     ],
-    files: [
-      {
-        type: ObjectId,
-        ref: 'File',
-      },
-    ],
+    // files: [
+    //   {
+    //     type: ObjectId,
+    //     ref: 'File',
+    //   },
+    // ],
     group: {
       type: ObjectId,
       ref: 'Group',

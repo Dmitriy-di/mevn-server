@@ -9,7 +9,7 @@ const { ObjectId } = mongoose.Types;
 const mongoHost = '127.0.0.1';
 const mongoPort = '27017';
 const urlDB = `mongodb://${mongoHost}:${mongoPort}`;
-const { File } = require('../model');
+const { File, Subject, Task } = require('../model');
 
 // Создаем хранилище GridFS
 const storage = new GridFsStorage({
@@ -89,7 +89,7 @@ connection.once('open', () => {
           const buffer = Buffer.concat(chunks);
           const base64Image = buffer.toString('base64');
           const dataUri = `data:${files[0].contentType};base64,${base64Image}`;
-          res.send(`<html><body><img src="${dataUri}" /></body></html>`);
+          res.send(dataUri);
         });
       } else {
         res.status(400).send('Unsupported file type');
@@ -114,6 +114,8 @@ const upload = multer({ storage });
 
 // Обработчик маршрута загрузки файла
 router.post('/', upload.single('file'), async (req, res) => {
+  console.log(333333, req.headers.taskid);
+
   const item = new File({
     name: req.file.filename,
     mimeType: req.file.mimetype,
@@ -124,10 +126,15 @@ router.post('/', upload.single('file'), async (req, res) => {
     encoding: req.file.encoding,
     bucketName: req.file.bucketName,
     contentType: req.file.contentType,
+    task: req.headers.taskid,
   });
   const newItem = await item.save();
-  console.log(1111, req.file); // Информация о загруженном файле
-  console.log(2222, newItem);
+
+  const task = await Task.findById(req.headers.taskid);
+  task.files.push(newItem);
+  await task.save();
+  // console.log(1111, req.file); // Информация о загруженном файле
+  // console.log(2222, newItem);
   res.status(200).send('File uploaded successfully!');
 });
 
