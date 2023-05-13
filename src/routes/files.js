@@ -114,8 +114,6 @@ const upload = multer({ storage });
 
 // Обработчик маршрута загрузки файла
 router.post('/', upload.single('file'), async (req, res) => {
-  console.log(333333, req.headers.taskid);
-
   const item = new File({
     name: req.file.filename,
     mimeType: req.file.mimetype,

@@ -12,6 +12,10 @@ const relations = {
         path: 'executor',
         model: 'Subject',
       },
+      populate: {
+        path: 'files',
+        model: 'File',
+      },
     },
   ],
   get: [
@@ -22,6 +26,10 @@ const relations = {
       populate: {
         path: 'executor',
         model: 'Subject',
+      },
+      populate: {
+        path: 'files',
+        model: 'File',
       },
     },
   ],
