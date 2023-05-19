@@ -1,150 +1,159 @@
-require('dotenv').config()
-const jwt = require('jsonwebtoken')
+require('dotenv').config();
+const jwt = require('jsonwebtoken');
 
-const { User, Token } = require('../model')
+const { User, Token } = require('../model');
 
 module.exports = {
   async logout({ body: { refreshToken } }, res) {
-    const foundToken = await Token.findOne({ token: refreshToken })
+    const foundToken = await Token.findOne({ token: refreshToken });
 
     if (!foundToken) {
       return res.status(403).send({
-        message: 'Пользователь не авторизован'
-      })
+        message: 'Пользователь не авторизован',
+      });
     }
 
-    await Token.findByIdAndDelete(foundToken._id)
+    await Token.findByIdAndDelete(foundToken._id);
 
     return res.status(200).send({
-      message: 'Юзер успешно разлогинен'
-    })
+      message: 'Юзер успешно разлогинен',
+    });
   },
   async refreshToken({ body: { refreshToken } }, res) {
     // Проверяем есть ли токен в запросе на сервер
     if (!refreshToken) {
       return res.status(403).send({
-        message: 'Действие запрещено'
-      })
+        message: 'Действие запрещено',
+      });
     }
     // ищем токен в бд
-    const currentToken = await Token.findOne({ token: refreshToken })
+    const currentToken = await Token.findOne({ token: refreshToken });
 
     // если не находим токен то возвращаем ошибку
     if (!currentToken) {
       return res.status(403).send({
-        message: 'Действие запрещено'
-      })
+        message: 'Действие запрещено',
+      });
     }
 
     jwt.verify(refreshToken, process.env.JWT_SECRET_REFRESH, (err, user) => {
       if (err) {
         return res.status(403).send({
-          message: 'Действие запрещено'
-        })
+          message: 'Действие запрещено',
+        });
       }
 
-      const accessToken = jwt.sign({
-        userId: user._id,
-        email: user.email,
-      }, process.env.JWT_SECRET, {
-        expiresIn: '1m'
-      })
+      const accessToken = jwt.sign(
+        {
+          userId: user._id,
+          email: user.email,
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: '1m',
+        },
+      );
 
       return res.status(200).send({
         accessToken,
-        email: user.email
-      })
-
-    })
+        email: user.email,
+      });
+    });
   },
   async login({ body: { email, password } }, res) {
     try {
-      const foundUser = await User.findOne({ email })
+      const foundUser = await User.findOne({ email });
 
       if (!foundUser) {
+        console.log('yes');
         return res.status(403).send({
-          message: 'Извините, но логин или пароль не подходят!',
-          err
-        })
+          message: 'Извините, но логин или пароль не подходят!1',
+          err,
+        });
       }
-      
+
       // мы расшифровываем пароль из базы данных
       // сравниваем
       // TO_DO
-      const isPasswordCorrect = foundUser.password === password
+      const isPasswordCorrect = foundUser.password === password;
 
       if (!isPasswordCorrect) {
         return res.status(403).send({
-          message: 'Извините, но логин или пароль не подходят!',
-          err
-        })
+          message: 'Извините, но логин или пароль не подходят!2',
+          err,
+        });
       }
 
-      const accessToken = jwt.sign({
-        userId: foundUser._id,
-        email: foundUser.email,
-      }, process.env.JWT_SECRET, {
-        expiresIn: '1m'
-      })
-
-      const refreshToken = jwt.sign({
-        userId: foundUser._id,
-        email: foundUser.email,
-      }, process.env.JWT_SECRET_REFRESH)
-
-      const foundToken = await Token.findOne({
-        user: foundUser._id
-      })
-
-      if (foundToken) {
-        await Token.findByIdAndUpdate(foundToken._id, { token: refreshToken })
-        return res.status(200).send({
-          accessToken,
-          refreshToken,
+      const accessToken = jwt.sign(
+        {
+          userId: foundUser._id,
           email: foundUser.email,
-        })
-      }
+        },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: '1m',
+        },
+      );
 
-      const item = new Token({ token: refreshToken, user: foundUser._id });
-      await item.save();
+      // const refreshToken = jwt.sign(
+      //   {
+      //     userId: foundUser._id,
+      //     email: foundUser.email,
+      //   },
+      //   process.env.JWT_SECRET_REFRESH,
+      // );
+
+      // const foundToken = await Token.findOne({
+      //   user: foundUser._id,
+      // });
+
+      // if (foundToken) {
+      //   await Token.findByIdAndUpdate(foundToken._id, { token: refreshToken });
+      //   return res.status(200).send({
+      //     accessToken,
+      //     refreshToken,
+      //     email: foundUser.email,
+      //   });
+      // }
+
+      // const item = new Token({ token: refreshToken, user: foundUser._id });
+      // await item.save();
 
       return res.status(200).send({
         accessToken,
-        refreshToken,
+        // refreshToken,
         email: foundUser.email,
-      })
-
+      });
     } catch (err) {
       return res.status(403).send({
-        message: 'Извините, но логин или пароль не подходят!',
-        err
-      })
+        message: 'Извините, но логин или пароль не подходят!3',
+        err,
+      });
     }
   },
+
   async signUp({ body: { email, password } }, res) {
     try {
-      const foundUser = await User.findOne({ email })
+      const foundUser = await User.findOne({ email });
 
       if (foundUser) {
         return res.status(403).send({
-          message: 'Данный емейл занят',
-          err
-        })
+          message: 'Данный email занят',
+          err,
+        });
       }
 
-      const createdUser = await new User({ email, password })
+      const createdUser = await new User({ email, password });
       await createdUser.save();
 
       return res.status(200).send({
-        message: "Пользователь создан"
-      })
-      // сделать емейл об удачной регистрации
-
+        message: 'Пользователь создан',
+      });
     } catch (err) {
       return res.status(403).send({
         message: 'Извините, но логин или пароль не подходят!',
-        err
-      })
+        err,
+      });
     }
-  }
-}
+  },
+};

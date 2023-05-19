@@ -12,6 +12,9 @@ const relations = {
         path: 'executor',
         model: 'Subject',
       },
+    },
+    {
+      path: 'tasks',
       populate: {
         path: 'files',
         model: 'File',
