@@ -31,9 +31,6 @@ module.exports = {
 
   async getAll(req, res) {
     try {
-      console.log(1, req?.user?.moderator);
-      console.log(1, req?.user?.userId);
-
       const tasks = await Task.find({
         executor: req?.user?.userId,
       }).populate(relations.getAll);

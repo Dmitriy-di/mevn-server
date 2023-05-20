@@ -43,12 +43,16 @@ module.exports = {
 
   async getAll(req, res) {
     try {
-      console.log(2, req?.user?.moderator);
-      console.log(2, req?.user?.userId);
+      let modules = [];
 
-      const modules = await Module.find({
-        responsible: req?.user?.userId,
-      }).populate(relations.getAll);
+      if (req.user.moderator) {
+        modules = await Module.find().populate(relations.getAll);
+      } else {
+        console.log(2);
+        modules = await Module.find({
+          responsible: req?.user?.userId,
+        }).populate(relations.getAll);
+      }
 
       // const modules = await Module.find().populate(relations.getAll);
       return res.status(200).send(modules);

@@ -12,13 +12,10 @@ module.exports = {
   async get(req, res) {
     try {
       let group = null;
-      console.log(8, req.params);
 
       if (req.user.moderator) {
         group = await Group.findById(req.params.id).populate(relations.get);
       }
-
-      console.log(6, group);
 
       return res.status(200).send(group);
     } catch (err) {
