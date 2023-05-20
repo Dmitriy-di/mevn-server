@@ -1,7 +1,7 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
-const { User, Token } = require('../model');
+const { User, Token, Subject } = require('../model');
 
 module.exports = {
   async logout({ body: { refreshToken } }, res) {
@@ -16,9 +16,11 @@ module.exports = {
     await Token.findByIdAndDelete(foundToken._id);
 
     return res.status(200).send({
-      message: 'Юзер успешно разлогинен',
+      message: 'Пользователь успешно разлогинен',
     });
   },
+
+  //Будет генерировать новые access токены в зависимости от refreshToken, который мы отправим
   async refreshToken({ body: { refreshToken } }, res) {
     // Проверяем есть ли токен в запросе на сервер
     if (!refreshToken) {
@@ -26,6 +28,7 @@ module.exports = {
         message: 'Действие запрещено',
       });
     }
+
     // ищем токен в бд
     const currentToken = await Token.findOne({ token: refreshToken });
 
@@ -50,7 +53,7 @@ module.exports = {
         },
         process.env.JWT_SECRET,
         {
-          expiresIn: '1m',
+          expiresIn: '1000m',
         },
       );
 
@@ -60,12 +63,12 @@ module.exports = {
       });
     });
   },
+
   async login({ body: { email, password } }, res) {
     try {
-      const foundUser = await User.findOne({ email });
+      const foundUser = await Subject.findOne({ email });
 
       if (!foundUser) {
-        console.log('yes');
         return res.status(403).send({
           message: 'Извините, но логин или пароль не подходят!1',
           err,
@@ -84,21 +87,26 @@ module.exports = {
         });
       }
 
+      //Подписываем токен
       const accessToken = jwt.sign(
         {
           userId: foundUser._id,
           email: foundUser.email,
+          moderator: foundUser.moderator,
         },
         process.env.JWT_SECRET,
         {
-          expiresIn: '1m',
+          expiresIn: '10m',
         },
       );
 
+      //здесь expiresIn оставляем по умолчанию
+      //Подписываем второй токен
       // const refreshToken = jwt.sign(
       //   {
       //     userId: foundUser._id,
       //     email: foundUser.email,
+      //     moderator: foundUser.moderator,
       //   },
       //   process.env.JWT_SECRET_REFRESH,
       // );

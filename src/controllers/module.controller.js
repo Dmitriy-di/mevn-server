@@ -41,6 +41,20 @@ const relations = {
 module.exports = {
   ...genericCrud(Module, relations),
 
+  async getAll(req, res) {
+    try {
+      console.log(1, req?.user?.moderator);
+      console.log(1, req?.user?.userId);
+
+      const modules = await Module.find({ responsible: req?.user?.userId });
+
+      // const modules = await Module.find().populate(relations.getAll);
+      return res.status(200).send(modules);
+    } catch (err) {
+      return res.status(400).send(boom.boomify(err));
+    }
+  },
+
   async create({ body }, res) {
     try {
       const item = new Module(body);

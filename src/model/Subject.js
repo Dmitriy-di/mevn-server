@@ -51,6 +51,14 @@ const schema = new Schema(
       ref: 'Group',
       // Если добавить поле required: true, то при создании модуля и указании ответственного будет получаться ошибка
     },
+    password: {
+      type: String,
+      default: 'qwerty123',
+    },
+    moderator: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true },
 );
