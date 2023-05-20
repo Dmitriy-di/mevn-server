@@ -69,6 +69,7 @@ module.exports = {
       const foundUser = await Subject.findOne({ email });
 
       if (!foundUser) {
+        console.log(4);
         return res.status(403).send({
           message: 'Извините, но логин или пароль не подходят!1',
           err,
@@ -81,6 +82,7 @@ module.exports = {
       const isPasswordCorrect = foundUser.password === password;
 
       if (!isPasswordCorrect) {
+        console.log(5);
         return res.status(403).send({
           message: 'Извините, но логин или пароль не подходят!2',
           err,
@@ -131,8 +133,10 @@ module.exports = {
         accessToken,
         // refreshToken,
         email: foundUser.email,
+        moderator: foundUser.moderator,
       });
     } catch (err) {
+      console.log(6);
       return res.status(403).send({
         message: 'Извините, но логин или пароль не подходят!3',
         err,
