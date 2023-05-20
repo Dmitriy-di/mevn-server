@@ -10,6 +10,7 @@ module.exports = {
   ...genericCrud(Subject, relations),
 
   async create({ body }, res) {
+    console.log(123, body);
     try {
       const item = new Subject(body);
       const newItem = await item.save();
