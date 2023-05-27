@@ -10,9 +10,6 @@ const Group = require('./Group');
 const File = require('./File');
 
 module.exports = {
-  Product,
-  Category,
-  Order,
   User,
   Token,
   Module,

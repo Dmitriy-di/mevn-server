@@ -1,14 +1,3 @@
 module.exports = {
-  routes: [
-    'categories',
-    'products',
-    'payment',
-    'auth',
-    'orders',
-    'modules',
-    'tasks',
-    'subjects',
-    'groups',
-    'filesObj',
-  ],
+  routes: ['auth', 'modules', 'tasks', 'subjects', 'groups', 'filesObj'],
 };

@@ -5,7 +5,6 @@ const mongoose = require('mongoose');
 const http = require('http');
 const cors = require('cors');
 const { routes } = require('./src/routes');
-const { join } = require('path');
 
 // настроим подключение к бд
 const mongoHost = '127.0.0.1';
@@ -38,7 +37,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 routes.forEach((item) => {
   app.use(`/api/v1/${item}`, require(`./src/routes/${item}`));
